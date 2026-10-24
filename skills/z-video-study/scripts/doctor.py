@@ -8,7 +8,7 @@ import sys
 
 def main() -> int:
     packages = {}
-    for name in ('openai-whisper', 'yt-dlp'):
+    for name in ('openai-whisper', 'yt-dlp', 'requests'):
         try:
             packages[name] = version(name)
         except PackageNotFoundError:

@@ -5,6 +5,7 @@
 - 原作者 / 仓库维护者：[tjxj](https://github.com/tjxj)
 - 原仓库：[tjxj/z-skills](https://github.com/tjxj/z-skills)
 - 原技能：[z-video-study-webpage-qwen](https://github.com/tjxj/z-skills/tree/a29467ebf92b244aabc1edc19bd11028fb9a3bb0/z-video-study-webpage-qwen)
+- 原下载技能：[z-video-downloader](https://github.com/tjxj/z-skills/tree/a29467ebf92b244aabc1edc19bd11028fb9a3bb0/z-video-downloader)
 - 参考提交：`a29467ebf92b244aabc1edc19bd11028fb9a3bb0`
 - 本地改造与整理：2026-10-24，由 [SteflerJiang](https://github.com/SteflerJiang) 使用 Codex 协助完成。
 
@@ -18,8 +19,10 @@
 | `tests/test_video_study.py` | 改造自上游 `tests/test_qwen_video_study.py` |
 | `scripts/codex_backend.py` | 本次改造新增；官方CLI、ChatGPT认证、分批多模态分析、JSON Schema、画面绑定、缓存恢复与凭据隔离 |
 | `tests/test_codex_backend.py` | 本次改造新增；验证分段、缓存、认证与隔离等行为 |
-| `install.sh`、`run.sh`、`scripts/cli.py`、`scripts/doctor.py`、`tests/test_cli.py` | 为分享安装而新增；相对路径入口、独立环境、依赖检查和轻量yt-dlp下载 |
-| 视频链接下载 | 使用yt-dlp本身的能力；工作流参考上游将下载和视频学习衔接的设计。本仓库未复制或打包上游完整 `z-video-downloader` 实现 |
+| `scripts/download_video.py` | 保留上游完整下载实现；仅将作者写死的yt-dlp备用路径和子进程PATH改为当前Python环境的路径，平台策略保持原样 |
+| `tests/test_download_video.py` | 原样保留上游下载测试 |
+| `references/download.md` | 基于上游下载技能说明，替换本机路径和调用入口，保留实际下载流程、能力和平台策略 |
+| `install.sh`、`run.sh`、`scripts/cli.py`、`scripts/doctor.py`、`tests/test_cli.py` | 为分享安装而新增；相对路径入口、独立环境、依赖检查及原下载报告到分析的衔接；URL入口不再另写下载实现 |
 
 主要改动是把原先依赖Qwen/百炼API Key的视频分析改成调用本地安装的官方Codex CLI，复用ChatGPT登录；下载、抽帧和Whisper转录在本机，截图和转录通过Codex服务分析。没有Qwen SDK/API配置或失败自动切换服务的入口。
 
