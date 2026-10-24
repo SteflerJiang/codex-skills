@@ -1,0 +1,27 @@
+name: Validate skills
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  video-study:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Unit tests without model calls
+        run: python -m unittest discover -s skills/z-video-study/tests
+      - name: Install FFmpeg for local media test
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Generate synthetic video and validate webpage
+        shell: bash
+        run: |
+          ffmpeg -y -f lavfi -i testsrc2=size=320x180:rate=8 -t 2 -c:v libx264 /tmp/skill-sample.mp4
+          VIDEO_STUDY_PYTHON=python bash skills/z-video-study/run.sh --video /tmp/skill-sample.mp4 --out-dir /tmp/skill-study --frame-count 4 --mock-analysis --skip-transcribe
+          python -c 'import json; r=json.load(open("/tmp/skill-study/run-report.json")); assert r["mode"]=="mock" and not r["missing_media"] and not r["invocations"]'

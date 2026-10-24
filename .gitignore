@@ -1,0 +1,15 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+credentials*
+cookies*.txt
+Video/
+output/
+study/
+.codex-cache/
+*.mp4
+*.wav
+*.pt
